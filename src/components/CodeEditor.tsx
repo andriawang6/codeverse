@@ -22,6 +22,7 @@ const CodeEditor = () => {
   const [code, setCode] = useState<string>("");
   const [problemText, setProblemText] = useState(""); // New state to store the problem text
   const [showProblemBox, setShowProblemBox] = useState(false); // State to control visibility of the box
+  const [interviewActive, setInterviewActive] = useState(true);
   
   type ProblemKey = "Two Sum" | "Reverse Linked List" | "Merge Sorted Arrays" | "Longest Substring Without Repeating Characters" | "Palindrome Check" | "Max Profit from Stock Prices";
   const problemDescriptions: Record<ProblemKey, string> = {
@@ -69,6 +70,12 @@ const CodeEditor = () => {
     setCode(newValue || "");
     socket.emit("send_code", { code: newValue });
   };
+
+  const endInterview = () => {
+    socket.emit("end_interview");
+    setInterviewActive(false);
+    navigate('/')
+  }
 
   return (
     <Container fluid>
@@ -137,7 +144,7 @@ const CodeEditor = () => {
                   placeholder="Select difficulty"
                   style={{ width: 150 }}
                 />*/}
-                <Button size="lg" radius="xl" variant="gradient" gradient={{ from: "#266181", to: "#58D3E3" }} onClick={() => navigate("/")}>Finish</Button>
+                <Button size="lg" radius="xl" variant="gradient" gradient={{ from: "#266181", to: "#58D3E3" }} onClick={endInterview} disabled={!interviewActive}>Finish</Button>
               </Group>
 
               {/* Monaco Editor */}
