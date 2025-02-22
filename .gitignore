@@ -130,3 +130,11 @@ dist
 .pnp.*
 
 .DS_Store
+
+# Ignore venv directory in backend
+/backend/venv
+/venv
+.env
+
+# Ignore __pycache__ directories
+**/__pycache__/

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Select, Container, Title, Stack, Group, Switch, useMantineColorScheme } from "@mantine/core";
 import Editor from "@monaco-editor/react";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5100"); // Connect to Flask WebSocket server
 
 const languageOptions = [
   { value: "javascript", label: "JavaScript" },
@@ -14,17 +17,24 @@ const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const monacoTheme = colorScheme === "dark" ? "vs-dark" : "vs";
+  const [code, setCode] = useState<string>("");
 
-  const [code, setCode] = useState("// Start coding here!"); // Store editor content
-
-  // Effect to read the code every 10 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("Editor Content:", code); // Auto-logs the editor's content every 10 sec
-    }, 10000); // 10,000ms = 10 seconds
+    // Listen for real-time code updates from the backend
+    socket.on("update_code", (data) => {
+      setCode(data.code);
+    });
 
-    return () => clearInterval(interval); // Cleanup interval on unmount
-  }, [code]); // Runs whenever `code` changes
+    return () => {
+      socket.off("update_code");
+    };
+  }, []);
+
+  // Emit code updates in real-time as the user types
+  const handleCodeChange = (newValue: string | undefined) => {
+    setCode(newValue || "");
+    socket.emit("send_code", { code: newValue });
+  };
 
   return (
     <Container fluid style={{ height: "100vh", padding: 0 }}>
@@ -53,10 +63,10 @@ const CodeEditor = () => {
 
         {/* Monaco Editor */}
         <Editor
-          height="calc(100vh - 80px)"  // Full screen minus the header height
+          height="calc(100vh - 80px)"
           language={language}
-          value={code} // Bind editor to state
-          onChange={(value) => setCode(value || "")} // Update state when user types
+          value={code}
+          onChange={handleCodeChange} // Send updates in real-time
           theme={monacoTheme}
           options={{
             lineNumbers: "on",
