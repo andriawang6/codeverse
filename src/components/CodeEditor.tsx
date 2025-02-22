@@ -41,7 +41,7 @@ const CodeEditor = () => {
       <Stack style={{ height: "100%", justifyContent: "space-between" }}>
         {/* Header and Controls */}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "10px" }}>
-          <Title order={2}>AI Coding Interview Practice</Title>
+          <Title order={2}>CrackIt</Title>
 
           {/* Controls: Language Selector & Dark Mode Toggle */}
           <Group>
