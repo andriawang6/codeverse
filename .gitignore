@@ -133,3 +133,4 @@ dist
 
 # Ignore venv directory in backend
 /backend/venv
+/venv

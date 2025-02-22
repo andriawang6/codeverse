@@ -5,9 +5,10 @@ import threading
 from RealtimeSTT import AudioToTextRecorder
 import time
 from google import genai
+from tts import text_to_speech
 import os
 
-client = genai.Client(api_key="fake")
+client = genai.Client(api_key="AIzaSyDcRiW1THtf3piCQTx-p3QWTwfRQVW6nh8")
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
@@ -60,10 +61,12 @@ def main():
         # response = call_gemini(speech)
         # print("AI Response:", response)
 
-        # Example: Convert AI response to speech (if using TTS)
-        # text_to_speech(response)
+        # Convert AI response to speech (if using TTS)
+        text_to_speech(response.text)
         
         time.sleep(1)  # To avoid busy-waiting
+
+
 
 def run_socketio():
     """Run the Flask-SocketIO server with the reloader disabled."""
