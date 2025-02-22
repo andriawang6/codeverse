@@ -4,13 +4,20 @@ from flask_cors import CORS
 import threading
 from RealtimeSTT import AudioToTextRecorder
 import time
+from google import genai
+from tts import text_to_speech
+import os
+from dotenv import load_dotenv
+from questions import choose_random_question
 
+load_dotenv()
+client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
 
 # Store the latest code
-current_code = "// Start coding here!"
+current_code = ""
 
 @socketio.on("connect")
 def handle_connect():
@@ -36,7 +43,7 @@ def main():
     """Runs procedural logic in the main thread."""
     print("Starting AI logic loop...")
     recorder = AudioToTextRecorder()
-    initial_prompt = "You are a technical interviewer conducting a LeetCode-style coding interview. The question you asked is Two Sum. Your responses must mimic the natural flow of a live technical interview by outputting only one line per turn. You should not walk the candidate through the question (only give simple hints, nothing that would give away the answer) and keep the response SHORT (around 1-3 sentences MAXIMUM). It is possible that some words may appear nonsensical or out of place due to transcription issues. In this scenario, do your best to phonetically interpret the text in the context of this prompt. Otherwise, if there are unclear portions, ask the interviewee to repeat their statement. This is very important: do not add any responses from the candidate. Only add one additional response as the interviewer. You should start out with basic introductions (no behavioral questions), and then provide the question. Don't introduce the problem, simply say that you will paste it in for the candidate to work with. NEVER prepend 'Interviewer: ' or anything similar to your answers. Make sure that you are working towards a logical ending point of the interview. If the candidate says anything that can't reasonably be part of the topic material of the interview, guide the candidate back on track. Unless the candidate is truly struggling, don't suggest specific data structures or algorithms. Just give very small hints as necessary. Only if a candidate gives an EXTREMELY vague description of their approach (i.e. just saying the name of a data structure), prompt them a few times to elaborate until they've described the algorithm that they intend to follow before asking them to code. Here's the past conversation history as well as what the candidate says next. I've appended the most recent code the candidate has produced immediately after this statement."
+    initial_prompt = f"You’re conducting a LeetCode-style coding interview on the question {choose_random_question()}. Mimic a natural conversation, outputting ONLY ONE SENTENCE. NEVER prepend 'Interviewer: ' or anything similar to your response. Don’t walk the candidate through the question (only give simple hints, nothing that would give away the answer) and keep the response short. Make sure that you are working towards a logical ending point of the interview. If the candidate says anything that can't reasonably be part of the topic material of the interview, guide the candidate back on track. Unless the candidate is truly struggling, don't suggest specific data structures or algorithms. Just give very small hints as necessary. Only if a candidate gives an EXTREMELY vague description of their approach (i.e. just saying the name of a data structure), prompt them a few times to elaborate until they've described the algorithm that they intend to follow before asking them to code. At the very end, provide detailed feedback on the candidate’s performance. Here's the past conversation history as well as the most recent code produced by the candidate. Interviewer: Here’s the problem: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order."
     chat_history = initial_prompt
 
     while True:
@@ -47,15 +54,22 @@ def main():
         print("User said:", speech)
         print("Code:", current_code) 
 
+        response = client.models.generate_content(
+            model="gemini-2.0-flash", contents=chat_history
+        )
+        print("AI: ", response.text)
+        chat_history += f"\nInterviewer: {response.text}"
 
         # Example: Call AI model (commented out if not needed)
         # response = call_gemini(speech)
         # print("AI Response:", response)
 
-        # Example: Convert AI response to speech (if using TTS)
-        # text_to_speech(response)
+        # Convert AI response to speech (if using TTS)
+        text_to_speech(response.text)
         
         time.sleep(1)  # To avoid busy-waiting
+
+
 
 def run_socketio():
     """Run the Flask-SocketIO server with the reloader disabled."""
