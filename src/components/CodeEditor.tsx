@@ -22,13 +22,16 @@ const CodeEditor = () => {
   const [code, setCode] = useState<string>("");
   const [problemText, setProblemText] = useState(""); // New state to store the problem text
   const [showProblemBox, setShowProblemBox] = useState(false); // State to control visibility of the box
-  const problems = [
-    "Solve this: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
-    "Solve this: Given a string s, find the length of the longest substring without repeating characters.",
-    "Solve this: Given an integer x, return true if x is a palindrome, and false otherwise.",
-    "Solve this: Given two binary strings a and b, return their sum as a binary string.",
-    "Solve this: You are given an array prices where prices[i] is the price of a given stock on the ith day. Find the maximum profit you can achieve."
-  ];
+  
+  type ProblemKey = "Two Sum" | "Reverse Linked List" | "Merge Sorted Arrays" | "Longest Substring Without Repeating Characters" | "Palindrome Check" | "Max Profit from Stock Prices";
+  const problemDescriptions: Record<ProblemKey, string> = {
+    "Two Sum": "Solve this: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
+    "Reverse Linked List": "Solve this: Given the head of a singly linked list, reverse the list and return its new head.",
+    "Merge Sorted Arrays": "Solve this: Given two sorted arrays, merge them into one sorted array.",
+    "Longest Substring Without Repeating Characters": "Solve this: Given a string s, find the length of the longest substring without repeating characters.",
+    "Palindrome Check": "Solve this: Given an integer x, return true if x is a palindrome, and false otherwise.",
+    "Max Profit from Stock Prices": "Solve this: You are given an array prices where prices[i] is the price of a given stock on the ith day. Find the maximum profit you can achieve by buying and selling at different days."
+  };
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,18 +51,17 @@ const CodeEditor = () => {
   }, []);*/}
 
   useEffect(() => {
-    // Fetch the problem from the backend
-    const fetchProblem = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/get-problem");
-        const data = await response.json();
-        setProblemText(data.problem);
-      } catch (error) {
-        console.error("Error fetching problem:", error);
+    socket.on("send_problem", (problemName: ProblemKey) => {
+      if (problemDescriptions[problemName]) {
+        setProblemText(problemDescriptions[problemName]);
+      } else {
+        setProblemText("Problem description not found.");
       }
+    });
+  
+    return () => {
+      socket.off("send_problem");
     };
-
-    fetchProblem();
   }, []);
 
   // Emit code updates in real-time as the user types
