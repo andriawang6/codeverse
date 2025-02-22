@@ -41,25 +41,25 @@ def main():
         check_threads()
         speech = recorder.text()
         print("User said:", speech)
-        print("Code: ", current_code) 
+        print("Code:", current_code) 
 
         # Example: Call AI model (commented out if not needed)
-        # response = call_gemini(stt)
+        # response = call_gemini(speech)
         # print("AI Response:", response)
 
         # Example: Convert AI response to speech (if using TTS)
         # text_to_speech(response)
         
-        time.sleep(1)  # To avoid busy-waiting (ensure a delay to manage CPU load)
+        time.sleep(1)  # To avoid busy-waiting
 
 def run_socketio():
-    """Run Flask-SocketIO server in a separate thread."""
-    socketio.run(app, host="0.0.0.0", port=5100, debug=True)
+    """Run the Flask-SocketIO server with the reloader disabled."""
+    socketio.run(app, host="0.0.0.0", port=5100, debug=True, use_reloader=False)
 
 if __name__ == "__main__":
-    # Start the WebSocket server in a separate thread
-    # threading.Thread(target=run_socketio, daemon=True)
-    socketio.run(app, host="0.0.0.0", port=5100, debug=True)
+    # Start the Flask-SocketIO server in a background thread
+    socket_server_thread = threading.Thread(target=run_socketio, daemon=True)
+    socket_server_thread.start()
 
     # Run the main logic in the main thread
-    # main()
+    main()
