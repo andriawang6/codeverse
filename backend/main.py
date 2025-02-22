@@ -9,6 +9,7 @@ from tts import text_to_speech
 import os
 from dotenv import load_dotenv
 from questions import choose_random_question
+from playsound import playsound
 
 load_dotenv()
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
@@ -18,6 +19,7 @@ socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
 
 # Store the latest code
 current_code = ""
+interview_active = True
 
 @socketio.on("connect")
 def handle_connect():
@@ -34,6 +36,13 @@ def handle_code_submission(data):
         print("Received code update:", code)
         emit("update_code", {"code": code}, broadcast=True)  # Broadcast to all clients
 
+@socketio.on("end_interview")
+def handle_end_interview():
+    global interview_active
+    interview_active = False
+    print("Interview ended by user")
+    emit("interview_ended", {"message": "Interview has ended."}, broadcast=True)
+
 def check_threads():
     print(f"Active threads: {threading.active_count()}")
     for thread in threading.enumerate():
@@ -42,6 +51,9 @@ def check_threads():
 def main():
     """Runs procedural logic in the main thread."""
     print("Starting AI logic loop...")
+
+    playsound(os.getenv('INTRO_PATH'))
+
     recorder = AudioToTextRecorder()
     initial_prompt = f"You're conducting a coding interview on the Leetcode question {choose_random_question()}. Output only ONE SENTENCE. This is extremely important: NEVER write code or prepend your role. Every response will be read aloud, so never include special characters like backticks or parenthesis. If the candidate says anything that can't reasonably be part of the topic material of the interview, guide the candidate back on track. Prompt them to describe their intended algorithm before asking them to code. If the user asks for time, acknowledge it and wait for them to continue. At the very end, give the candidate feedback on their performance. Here's the past conversation history as well as the most recent code produced by the candidate."
     chat_history = initial_prompt
@@ -49,10 +61,17 @@ def main():
     response = chat.send_message(initial_prompt)
     print(response.text)
 
-    while True:
+    while interview_active:
+        if not interview_active:
+            break
+
         check_threads()
         code = ""
         speech = recorder.text()
+
+        if not interview_active:
+            break
+
         chat_history += f"\nCandidate: {speech}"
         chat_history += f"\nCode: {current_code}"
         if not current_code:
@@ -70,11 +89,13 @@ def main():
         # response = call_gemini(speech)
         # print("AI Response:", response)
 
+        if not interview_active:
+            break
+
         # Convert AI response to speech (if using TTS)
         text_to_speech(response.text)
         
-        time.sleep(1)  # To avoid busy-waiting
-
+    playsound(os.getenv('END_PATH'))
 
 
 def run_socketio():
