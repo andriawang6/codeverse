@@ -130,3 +130,6 @@ dist
 .pnp.*
 
 .DS_Store
+
+# Ignore venv directory in backend
+/backend/venv
