@@ -6,15 +6,15 @@ import { io } from "socket.io-client";
 const socket = io("http://localhost:5100"); // Connect to Flask WebSocket server
 
 const languageOptions = [
-  { value: "javascript", label: "JavaScript" },
   { value: "python", label: "Python" },
-  { value: "cpp", label: "C++" },
   { value: "java", label: "Java" },
+  { value: "cpp", label: "C++" },
+  { value: "javascript", label: "JavaScript" },
   { value: "typescript", label: "TypeScript" },
 ];
 
 const CodeEditor = () => {
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState("python");
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const monacoTheme = colorScheme === "dark" ? "vs-dark" : "vs";
   const [code, setCode] = useState("// Start coding here!");
