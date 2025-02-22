@@ -135,3 +135,6 @@ dist
 /backend/venv
 /venv
 .env
+
+# Ignore __pycache__ directories
+**/__pycache__/
