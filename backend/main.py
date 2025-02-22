@@ -7,8 +7,10 @@ import time
 from google import genai
 from tts import text_to_speech
 import os
+from dotenv import load_dotenv
 
-client = genai.Client(api_key="AIzaSyDcRiW1THtf3piCQTx-p3QWTwfRQVW6nh8")
+load_dotenv()
+client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")

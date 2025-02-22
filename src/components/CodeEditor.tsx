@@ -17,7 +17,7 @@ const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const monacoTheme = colorScheme === "dark" ? "vs-dark" : "vs";
-  const [code, setCode] = useState("// Start coding here!");
+  const [code, setCode] = useState<string>("");
 
   useEffect(() => {
     // Listen for real-time code updates from the backend
