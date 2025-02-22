@@ -102,12 +102,6 @@ const CodeEditor = () => {
     navigate('/');
   };
 
-  const endInterview = () => {
-    socket.emit("end_interview");
-    setInterviewActive(false);
-    navigate('/')
-  }
-
   return (
     <Container fluid>
       {/* Title Section - Full Width */}
