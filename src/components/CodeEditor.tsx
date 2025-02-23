@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { IconAlertCircle } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import {
   Box,
@@ -44,10 +44,10 @@ const CodeEditor = () => {
     color: string;
   };
   const messageStatus: Record<string, MessageStatus> = {
-    'Status 0': { message: 'AI Speaking', color: '#89CFF0' },
-    'Status 1': { message: 'Speak now', color: '#00FF00' },
-    'Status 2': { message: 'AI Thinking', color: '#FFA500' },
-    'Status 3': { message: 'AI Speaking', color: '#BF40BF' },
+    'Status 0': { message: 'AI Speaking.', color: '#6171C1' },
+    'Status 1': { message: 'Speak now.', color: '#00FF00' },
+    'Status 2': { message: 'AI Thinking.', color: '#FFA500' },
+    'Status 3': { message: 'AI Speaking.', color: '#BF40BF' },
   };
   const [status, setStatus] = useState('Status 0');
 
@@ -129,7 +129,7 @@ const CodeEditor = () => {
         style={{
           width: '100%',
           padding: '5px',
-          backgroundColor: '#000000', // Corrected color
+          backgroundColor: '#2D3F93', // Corrected color
           borderBottom: '2px solid #ddd',
           marginBottom: '10px',
           color: 'gray',
@@ -146,12 +146,14 @@ const CodeEditor = () => {
         >
           {/* Left Side: Logo & Dropdown */}
           <Group>
-            <img src={logo} alt="Logo" style={{ height: '40px' }} /> {/* Adjust path & size */}
+            <Link to="/">
+              <img src={logo} alt="Logo" style={{ height: '40px' }} />
+            </Link>
           </Group>
 
           {/* Centered Title */}
-          <Title style={{ color: '#89CFF0' }} order={1}>
-            CrackIt
+          <Title style={{ color: '#FFFFFF' }} order={1}>
+            codeverse
           </Title>
         </Group>
       </Box>
@@ -231,7 +233,7 @@ const CodeEditor = () => {
                   size="lg"
                   radius="xl"
                   variant="gradient"
-                  gradient={{ from: '#266181', to: '#58D3E3' }}
+                  gradient={{ from: '#2D3F93', to: '#1E3A8A' }}
                   onClick={endInterview}
                   disabled={!interviewActive}
                 >
