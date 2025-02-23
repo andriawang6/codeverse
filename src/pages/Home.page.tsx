@@ -1,4 +1,4 @@
-import { Button, Container, Stack, Text, Title, Center, Overlay } from "@mantine/core";
+import { Button, Container, Stack, Text, Center, Overlay } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
 import bgImage from "../components/background.png";
@@ -27,7 +27,7 @@ export function HomePage() {
       height: "100vh",
       backgroundImage: `url(${bgImage})`,
       backgroundSize: "cover", // Ensures the image covers the screen
-      backgroundPosition: "center",
+      backgroundPosition: "bottom",
     }}>
       <Overlay opacity={0.0} color="#000" zIndex={1} />
       <Center style={{
@@ -37,35 +37,28 @@ export function HomePage() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end", // Center content vertically
-        alignItems: "center", // Center content horizontally
+        alignItems: "right", // Center content horizontally
         padding: "0 20px", // Add some padding on the sides for smaller screens
       }}>
         <Container>
           <Stack 
             align="center" 
-            style={{ marginTop: '-300px' }} // Add negative margin to move everything up
+            style={{ marginTop: '-75%' }} // Add negative margin to move everything up
           >
-            <Title 
-              order={1} 
-              size={60} 
-              fw={700} 
-              style={{ color: "white", textAlign: "center" }}
-            >
-            </Title>
-            <Text 
+            <Container><Text 
               size="lg" 
               c="gray.3" 
               style={{ maxWidth: 600, textAlign: "center" }}
             >
-              AI mock interviewer for technical and finance roles
+              AI mock interviewer for SWE and finance roles
             </Text>
             <Button
               size="lg"
               radius="xl"
               variant="gradient"
-              gradient={{ from: "#FF4500 ", to: "#D16002" }}
+              gradient={{ from: "#FF4500 ", to: "#FF4500" }}
               onClick={handleStartInterview}
-              style={{ marginTop: "4px" }}
+              style={{ marginTop: "15px", marginRight: "20px"}}
             >
               Start SWE Interview
             </Button>
@@ -74,11 +67,13 @@ export function HomePage() {
               size="lg"
               radius="xl"
               variant="gradient"
-              gradient={{ from: "#266181", to: "#58D3E3" }}
+              gradient={{ from: "#FF4500", to: "#FF4500" }}
               onClick={handleStartBankInterview}
-            >
+              style={{ marginTop: "15px"}}
+>
               Start IB Interview
             </Button>
+            </Container>
           </Stack>
         </Container>
       </Center>
