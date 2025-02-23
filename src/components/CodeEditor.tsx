@@ -36,7 +36,6 @@ const CodeEditor = () => {
   const [code, setCode] = useState<string>('');
   const [problemText, setProblemText] = useState(''); // New state to store the problem text
   const [problemName, setProblemName] = useState(''); // New state to store the problem text
-  const [showProblemBox, setShowProblemBox] = useState(false); // State to control visibility of the box
   const [interviewActive, setInterviewActive] = useState(true);
 
   type MessageStatus = {
@@ -122,7 +121,7 @@ const CodeEditor = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid px={0} style={{ height: '100vh' }}>
       {/* Title Section - Full Width */}
 
       <Box
@@ -170,7 +169,7 @@ const CodeEditor = () => {
                 fontFamily: 'Verdana, sans-serif',
                 fontWeight: '600',
                 fontSize: '25px',
-                color: '#FFFFFF',
+                color: colorScheme === 'dark' ? '#FFFFFF' : '#000000', // Dynamically change color
                 lineHeight: '1.5',
                 marginBottom: '10px',
               }}
@@ -181,7 +180,7 @@ const CodeEditor = () => {
               size="xl"
               style={{
                 fontFamily: 'Verdana, sans-serif',
-                color: '#FFFFFF',
+                color: colorScheme === 'dark' ? '#FFFFFF' : '#000000', // Dynamically change color
                 fontSize: '15px',
                 lineHeight: '1.5',
                 whiteSpace: 'pre-line', 
