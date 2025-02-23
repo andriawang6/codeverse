@@ -39,6 +39,13 @@ def handle_code_submission(data):
         print("Received code update:", code)
         emit("update_code", {"code": code}, broadcast=True)  # Broadcast to all clients
 
+@socketio.on("start_interview")
+def handle_start_interview():
+    global interview_active
+    if interview_active:
+        main()
+        emit("interview_started", {"message": "Interview has started."}, broadcast=True)
+
 @socketio.on("end_interview")
 def handle_end_interview():
     global interview_active
@@ -97,10 +104,7 @@ def main():
         # Convert AI response to speech (if using TTS)
         text_to_speech(response.text)
         
-    playsound(os.getenv('END_PATH'))
-
-
-
+    playsound(os.getenv('END_PATH'))    
 
 def run_socketio():
     """Run the Flask-SocketIO server with the reloader disabled."""
@@ -108,8 +112,4 @@ def run_socketio():
 
 if __name__ == "__main__":
     # Start the Flask-SocketIO server in a background thread
-    socket_server_thread = threading.Thread(target=run_socketio, daemon=True)
-    socket_server_thread.start()
-
-    # Run the main logic in the main thread
-    main()
+    run_socketio()
