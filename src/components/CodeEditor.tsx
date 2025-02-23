@@ -16,7 +16,7 @@ import {
   Title,
   useMantineColorScheme,
 } from '@mantine/core';
-import logo from '../components/image.png';
+import logo from '../components/icon.png';
 import { problemDescriptions, ProblemKey } from './Problems'
 
 const socket = io('http://localhost:5100'); // Connect to Flask WebSocket server
