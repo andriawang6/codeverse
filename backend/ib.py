@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
 
-interview_active = False
+interview_active = True
 
 @socketio.on("connect")
 def handle_connect():
@@ -56,7 +56,7 @@ def main():
 
     # Play intro sound asynchronously
     sound_done = threading.Event()
-    threading.Thread(target=playsound_async, args=(os.getenv('INTRO_PATH'), sound_done)).start()
+    threading.Thread(target=playsound_async, args=(os.getenv('FINANCE_PATH'), sound_done)).start()
 
     recorder = AudioToTextRecorder()
     initial_prompt = (

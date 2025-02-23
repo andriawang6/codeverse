@@ -10,7 +10,7 @@ import os
 from dotenv import load_dotenv
 from questions import choose_random_question
 from playsound import playsound
-
+import ib
 
 load_dotenv()
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
@@ -44,11 +44,14 @@ def handle_code_submission(data):
         emit("update_code", {"code": code}, broadcast=True)  # Broadcast to all clients
 
 @socketio.on("start_interview")
-def handle_start_interview():
+def handle_start_interview(data):
     global interview_active
     interview_active = True
     if interview_active:
-        main()
+        if data == 'swe':
+            main()
+        else:
+            ib.main()
         emit("interview_started", {"message": "Interview has started."}, broadcast=True)
 
 @socketio.on("end_interview")
