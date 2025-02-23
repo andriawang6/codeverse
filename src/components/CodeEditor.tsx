@@ -36,7 +36,6 @@ const CodeEditor = () => {
   const [code, setCode] = useState<string>('');
   const [problemText, setProblemText] = useState(''); // New state to store the problem text
   const [problemName, setProblemName] = useState(''); // New state to store the problem text
-  const [showProblemBox, setShowProblemBox] = useState(false); // State to control visibility of the box
   const [interviewActive, setInterviewActive] = useState(true);
 
   type MessageStatus = {
@@ -122,7 +121,7 @@ const CodeEditor = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid px={0} style={{ height: '100vh' }}>
       {/* Title Section - Full Width */}
 
       <Box
