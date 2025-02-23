@@ -11,13 +11,13 @@ export function HomePage() {
 
   // Existing SWE interview start
   const handleStartInterview = () => {
-    socket.emit("start_interview");
+    socket.emit("start_interview", "swe");
     navigate("/editor");
   };
 
   // New IB interview start
   const handleStartBankInterview = () => {
-    socket.emit("start_bank_interview");
+    socket.emit("start_interview", "banking");
     navigate("/banking"); // This corresponds to your new Banking.tsx page
   };
 
