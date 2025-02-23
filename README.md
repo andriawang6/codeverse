@@ -17,20 +17,15 @@ Codeverse is an AI-powered technical interviewer designed to simulate software e
 - **Real-Time Communication**: Socket.io, Multithreading for fast response handling  
 
 ## Setup Instructions  
-
-1. **Clone the repository**  
-   ```sh
-   git clone https://github.com/your-repo/codeverse.git
-   cd codeverse
-2. **Install dependencies**
+1. **Install dependencies**
    ```sh
    pip install -r backend/requirements.txt
    npm install 
-3. **Run the backend**
+2. **Run the backend**
    ```sh
    cd backend
    python main.py
-5. **Run the fronend**
+3. **Run the fronend**
    ```sh
    npm run dev
 
