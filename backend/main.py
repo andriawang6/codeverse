@@ -85,10 +85,15 @@ def main():
 
         check_threads()
         code = ""
+
+        socketio.emit("status_update", {"status": "Status 1"})
+
         speech = recorder.text()
 
         if not interview_active:
             break
+
+        socketio.emit("status_update", {"status": "Status 2"})
 
         chat_history += f"\nCandidate: {speech}"
         chat_history += f"\nCode: {current_code}"
@@ -109,6 +114,9 @@ def main():
 
         if not interview_active:
             break
+
+        socketio.emit("status_update", {"status": "Status 3"})
+
         # Convert AI response to speech (if using TTS)
         text_to_speech(response.text)
         

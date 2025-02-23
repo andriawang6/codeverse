@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import {
@@ -36,6 +37,18 @@ const CodeEditor = () => {
   const [showProblemBox, setShowProblemBox] = useState(false); // State to control visibility of the box
   const [interviewActive, setInterviewActive] = useState(true);
 
+  type MessageStatus = {
+    message: string;
+    color: string;
+  };
+  const messageStatus: Record<string, MessageStatus> = {
+    'Status 0': { message: 'AI Speaking.', color: '#89CFF0' },
+    'Status 1': { message: 'Speak now.', color: '#00FF00' },
+    'Status 2': { message: 'AI Thinking.', color: '#FFA500' },
+    'Status 3': { message: 'AI Speaking.', color: '#BF40BF' },
+  };
+  const [status, setStatus] = useState('Status 0');
+
   type ProblemKey =
     | 'Two Sum'
     | 'Reverse Linked List'
@@ -69,6 +82,18 @@ const CodeEditor = () => {
     };
   }, []);
 
+  useEffect(() => {
+    socket.on('status_update', (data) => {
+      if (data.status) {
+        setStatus(data.status);
+      }
+    });
+
+    return () => {
+      socket.off('status_update');
+    };
+  }, []);
+
   {
     /*useEffect(() => {
     const randomProblem = problems[Math.floor(Math.random() * problems.length)];
@@ -78,12 +103,19 @@ const CodeEditor = () => {
 
   useEffect(() => {
     socket.on('send_problem', (problemName: ProblemKey) => {
+      console.log('Received problem:', problemName); // Debugging
       if (problemDescriptions[problemName]) {
         setProblemText(problemDescriptions[problemName]);
       } else {
         setProblemText('Problem description not found.');
       }
     });
+
+    // Set a default problem when the component mounts
+    if (!problemText) {
+      const randomProblem = Object.keys(problemDescriptions)[0] as ProblemKey;
+      setProblemText(problemDescriptions[randomProblem]);
+    }
 
     return () => {
       socket.off('send_problem');
@@ -176,6 +208,18 @@ const CodeEditor = () => {
                   placeholder="Select difficulty"
                   style={{ width: 150 }}
                 />*/}
+
+                <Group>
+                  <IconAlertCircle
+                    size={24}
+                    color={messageStatus[status]?.color}
+                    style={{ marginRight: '10px' }}
+                  />
+                  <Text size="lg" style={{ color: messageStatus[status]?.color }}>
+                    {messageStatus[status]?.message}
+                  </Text>
+                </Group>
+
                 <Button
                   size="lg"
                   radius="xl"
