@@ -170,7 +170,7 @@ const CodeEditor = () => {
                 fontFamily: 'Verdana, sans-serif',
                 fontWeight: '600',
                 fontSize: '25px',
-                color: '#FFFFFF',
+                color: colorScheme === 'dark' ? '#FFFFFF' : '#000000', // Dynamically change color
                 lineHeight: '1.5',
                 marginBottom: '10px',
               }}
@@ -181,7 +181,7 @@ const CodeEditor = () => {
               size="xl"
               style={{
                 fontFamily: 'Verdana, sans-serif',
-                color: '#FFFFFF',
+                color: colorScheme === 'dark' ? '#FFFFFF' : '#000000', // Dynamically change color
                 fontSize: '15px',
                 lineHeight: '1.5',
                 whiteSpace: 'pre-line', 
