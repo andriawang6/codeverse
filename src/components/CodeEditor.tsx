@@ -52,7 +52,7 @@ const CodeEditor = () => {
     'Longest Substring Without Repeating Characters':
       'Solve this: Given a string s, find the length of the longest substring without repeating characters.',
     'Palindrome Check':
-      'Solve this: Given an integer x, return true if x is a palindrome, and false otherwise.',
+      'Solve this: Given a string x, return true if x is a palindrome, and false otherwise.',
     'Max Profit from Stock Prices':
       'Solve this: You are given an array prices where prices[i] is the price of a given stock on the ith day. Find the maximum profit you can achieve by buying and selling at different days.',
   };
