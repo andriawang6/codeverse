@@ -1,34 +1,39 @@
-# Mantine Vite template
+# Codeverse  
 
-## Features
+Codeverse is an AI-powered technical interviewer designed to simulate software engineering and financial interview scenarios. It provides real-time, interactive feedback on both coding and communication skills, helping users prepare for high-stakes technical interviews.  
 
-This template comes with the following features:
+## Features  
 
-- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Storybook](https://storybook.js.org/)
-- [Vitest](https://vitest.dev/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
+- **Live AI-Powered Interview Simulation** – Receive real-time feedback on code efficiency, problem-solving strategies, and communication clarity.  
+- **Speech-to-Text Processing** – Converts spoken thoughts into text to analyze reasoning.  
+- **Dynamic AI Responses** – Asks follow-up and clarification questions, provides hints, and offers structured feedback.  
+- **Real-Time Code Evaluation** – Supports multi-language syntax highlighting and execution.  
+- **Seamless Audio & Code Integration** – Uses Gemini API and Google Cloud TTS for natural, responsive conversation.  
 
-## npm scripts
+## Tech Stack  
 
-## Build and dev scripts
+- **Frontend**: TypeScript, Mantine 
+- **Backend**: Flask, Gemini API, Google Cloud TTS, Python  
+- **Real-Time Communication**: Socket.io, Multithreading for fast response handling  
 
-- `dev` – start development server
-- `build` – build production version of the app
-- `preview` – locally preview production build
+## Setup Instructions  
 
-### Testing scripts
+1. **Clone the repository**  
+   ```sh
+   git clone https://github.com/your-repo/codeverse.git
+   cd codeverse
+2. **Install dependencies**
+   ```sh
+   pip install -r backend/requirements.txt
+   npm install 
+3. **Run the backend**
+   ```sh
+   cd backend
+   python main.py
+5. **Run the fronend**
+   ```sh
+   npm run dev
 
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `vitest` – runs vitest tests
-- `vitest:watch` – starts vitest watch
-- `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
-
-### Other scripts
-
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+# Future Improvements
+- Personalized learning paths based on interview performance- Additional problem categories (quant, data science, cybersecurity)
+- Enhanced analytics for tracking progress over time
