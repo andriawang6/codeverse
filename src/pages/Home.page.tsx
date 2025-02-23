@@ -1,17 +1,25 @@
 import { Button, Container, Stack, Text, Title, Center, Overlay } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+
 import bgImage from "../components/background.png";
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5100'); // Connect to Flask WebSocket server
+const socket = io("http://localhost:5100"); // Connect to Flask WebSocket server
 
 export function HomePage() {
   const navigate = useNavigate();
 
+  // Existing SWE interview start
   const handleStartInterview = () => {
     socket.emit("start_interview");
     navigate("/editor");
-  }
+  };
+
+  // New IB interview start
+  const handleStartBankInterview = () => {
+    socket.emit("start_bank_interview");
+    navigate("/banking"); // This corresponds to your new Banking.tsx page
+  };
 
   return (
     <div style={{
@@ -49,7 +57,7 @@ export function HomePage() {
               c="gray.3" 
               style={{ maxWidth: 600, textAlign: "center" }}
             >
-              AI mock interviewer for technical roles
+              AI mock interviewer for technical and finance roles
             </Text>
             <Button
               size="lg"
@@ -59,7 +67,17 @@ export function HomePage() {
               onClick={handleStartInterview}
               style={{ marginTop: "4px" }}
             >
-              Start Interview
+              Start SWE Interview
+            </Button>
+            {/* New button for IB interviews */}
+            <Button
+              size="lg"
+              radius="xl"
+              variant="gradient"
+              gradient={{ from: "#266181", to: "#58D3E3" }}
+              onClick={handleStartBankInterview}
+            >
+              Start IB Interview
             </Button>
           </Stack>
         </Container>
