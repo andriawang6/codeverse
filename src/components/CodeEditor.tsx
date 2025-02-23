@@ -16,6 +16,7 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import logo from '../components/image.png';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 const socket = io('http://localhost:5100'); // Connect to Flask WebSocket server
 
@@ -35,6 +36,12 @@ const CodeEditor = () => {
   const [problemText, setProblemText] = useState(''); // New state to store the problem text
   const [showProblemBox, setShowProblemBox] = useState(false); // State to control visibility of the box
   const [interviewActive, setInterviewActive] = useState(true);
+  const messageStatus = { //modify with AI flags
+    "Status 1": { message: "Speak now", color: "#00FF00" },
+    "Status 2": { message: "AI Thinking.", color: "#FFA500" },
+    "Status 3": { message: "AI Speaking.", color: "#BF40BF" },
+  };
+  const status = "Status 2";  
 
   type ProblemKey =
     | 'Two Sum'
@@ -176,6 +183,14 @@ const CodeEditor = () => {
                   placeholder="Select difficulty"
                   style={{ width: 150 }}
                 />*/}
+
+                <Group>
+                  <IconAlertCircle size={24} color={messageStatus[status]?.color} style={{ marginRight: "10px" }} />
+                  <Text size="lg" style={{ color: messageStatus[status]?.color }}>
+                    {messageStatus[status]?.message}
+                  </Text>
+                </Group>
+
                 <Button
                   size="lg"
                   radius="xl"
