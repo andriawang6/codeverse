@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from questions import choose_random_question
 from playsound import playsound
 
+
 load_dotenv()
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 app = Flask(__name__)
@@ -25,9 +26,12 @@ interview_active = True
 @socketio.on("connect")
 def handle_connect():
     print("Client connected")
-    random_question = choose_random_question()
-    emit("send_problem", random_question)
     emit("update_code", {"code": current_code})  # Send the latest code on connection
+
+@socketio.on('send_problem')
+def handle_send_problem(problem_name):
+    global random_question
+    random_question = problem_name  # Update the random question based on frontend choice
 
 @socketio.on("send_code")
 def handle_code_submission(data):
@@ -85,10 +89,15 @@ def main():
 
         check_threads()
         code = ""
+
+        socketio.emit("status_update", {"status": "Status 1"})
+
         speech = recorder.text()
 
         if not interview_active:
             break
+
+        socketio.emit("status_update", {"status": "Status 2"})
 
         chat_history += f"\nCandidate: {speech}"
         chat_history += f"\nCode: {current_code}"
@@ -109,6 +118,9 @@ def main():
 
         if not interview_active:
             break
+
+        socketio.emit("status_update", {"status": "Status 3"})
+
         # Convert AI response to speech (if using TTS)
         text_to_speech(response.text)
         
