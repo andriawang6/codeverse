@@ -36,11 +36,11 @@ export const problemDescriptions: Record<ProblemKey, string> = {
     Problem: Given two sorted arrays, merge them into one sorted array.
 
     \n Example 1:
-    Input: nums1 = [1,2,3], nums2 = [2,5,6]
+    Input: nums1 = [1,2,3,0,0,0], nums2 = [2,5,6]
     Output: [1,2,2,3,5,6]
 
     Example 2:
-    Input: nums1 = [0], nums2 = [1]
+    Input: nums1 = [0,0], nums2 = [1]
     Output: [0,1]
   `,
   'Longest Substring Without Repeating Characters': `

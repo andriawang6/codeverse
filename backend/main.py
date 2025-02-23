@@ -49,6 +49,8 @@ def handle_start_interview(data):
     interview_active = True
     if interview_active:
         if data == 'swe':
+            global current_code 
+            current_code = ""
             main()
         else:
             ib.main()
@@ -78,8 +80,8 @@ def main():
     sound_done = threading.Event()
     threading.Thread(target=playsound_async, args=(os.getenv('INTRO_PATH'), sound_done)).start()
 
-    recorder = AudioToTextRecorder()
-    initial_prompt = f"You're conducting a coding interview on the Leetcode question {random_question}. Output only ONE SENTENCE. This is extremely important: NEVER write code or prepend your role. Every response will be read aloud, so never include special characters like backticks or parenthesis. If the candidate says anything that can't reasonably be part of the topic material of the interview, guide the candidate back on track. Prompt them to describe their intended algorithm before asking them to code. If the user asks for time, acknowledge it and wait for them to continue. Check the initial section of the prompt labeled Code: for the user's code. At the very end, give the candidate feedback on their performance. Here's the past conversation history as well as the most recent code produced by the candidate."
+    recorder = AudioToTextRecorder(input_device_index=2)
+    initial_prompt = f"You're conducting a coding interview on the Leetcode question {random_question}. Output only ONE SENTENCE. This is extremely important: NEVER write code or prepend your role. Every response will be read aloud, so never include special characters like backticks or parenthesis. If the candidate says anything that can't reasonably be part of the topic material of the interview, guide the candidate back on track. Prompt them to describe their intended algorithm before asking them to code. If the user asks for time, acknowledge it and wait for them to continue. Check the initial section of the prompt labeled Code: for the user's code. When the user indicates the solution is finished, ask them about the time and space complexity. At the very end, give the candidate feedback on their performance. Here's the past conversation history as well as the most recent code produced by the candidate."
     chat_history = initial_prompt
     chat = client.chats.create(model="gemini-2.0-flash")
     response = chat.send_message(initial_prompt)
