@@ -30,5 +30,6 @@ Codeverse is an AI-powered technical interviewer designed to simulate software e
    npm run dev
 
 # Future Improvements
-- Personalized learning paths based on interview performance- Additional problem categories (quant, data science, cybersecurity)
+- Personalized learning paths based on interview performance
+- Additional problem categories (quant, data science, cybersecurity)
 - Enhanced analytics for tracking progress over time
