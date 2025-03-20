@@ -74,7 +74,6 @@ def main():
     """Runs procedural logic in the main thread."""
     print("Starting AI logic loop...")
 
-    # playsound(os.getenv('INTRO_PATH'))
     sound_done = threading.Event()
     threading.Thread(target=playsound_async, args=(os.getenv('INTRO_PATH'), sound_done)).start()
 
